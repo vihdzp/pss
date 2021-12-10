@@ -76,7 +76,7 @@ end
 
 /-- Standard PrSS lists. -/
 inductive is_standard : list ℕ → Prop
-| base (n : ℕ) : is_standard (list.range n)
+| base (n : ℕ) : is_standard (list.range n).reverse
 | prss (l : list ℕ) (n : ℕ) : is_standard (l.prss n)
 
 /-- Tails of standard lists are standard. -/
