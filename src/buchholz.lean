@@ -23,7 +23,7 @@ instance : has_le buchholz_on := ⟨λ a b, a < b ∨ a = b⟩
 
 def built_from_below (v : ℕ) (α : buchholz_on) : buchholz_on → Prop
 | 0             := tt
-| (add v' α' β) := built_from_below α' ∧ built_from_below β ∧ (v' < v ∨ α' < α)
+| (add v' α' β) := built_from_below β ∧ (v' < v ∨ (built_from_below α' ∧ α' < α))
 
 def normal_form : buchholz_on → Prop
 | 0                     := tt
@@ -176,14 +176,16 @@ end
 theorem C_mex_lt_aleph (v : ℕ) (α : ordinal.{u}) (Ψ : psi_family α) :
   C_mex' v α Ψ < (cardinal.aleph (v + 1)).ord :=
 begin
-  apply lt_of_le_of_lt (ordinal.mex_le_not_mem),
-  have := ordinal.mex (C v α Ψ) (@classical.some_spec _ (λ β, ¬ C v α Ψ β ) (C_mex_lt_aleph' v α Ψ)),
-  cases C_mex_lt_aleph' v α Ψ with β hβ,
+  --apply lt_of_le_of_lt (ordinal.mex_le_not_mem),
+ -- have := ordinal.mex (C v α Ψ) (@classical.some_spec _ (λ β, ¬ C v α Ψ β ) (C_mex_lt_aleph' v α Ψ)),
+ -- cases C_mex_lt_aleph' v α Ψ with β hβ,
+ sorry
 end
 
 /-- Minimum excluded ordinal of `C v α Ψ`. -/
-noncomputable def C_mex (v : ℕ) (α : ordinal.{u}) (Ψ : psi_family α) : ordinal.lt_aleph.{u} v :=
-⟨C_mex' v α Ψ, C_mex_lt_aleph v α Ψ⟩
+noncomputable def C_mex (v : ℕ) (α : ordinal.{u}) (Ψ : psi_family α) : ordinal.lt_aleph.{u} (v + 1) :=
+sorry
+--⟨C_mex' v α Ψ, C_mex_lt_aleph v α Ψ⟩
 
 noncomputable def buchholz_psi' : ordinal.{u} → Π v, ordinal.lt_aleph (v + 1) :=
 well_founded.fix ordinal.wf (λ α Ψ v, C_mex v α (λ ⟨β, hβ⟩, Ψ β hβ))
