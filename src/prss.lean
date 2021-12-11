@@ -1,5 +1,4 @@
-import data.list.defs
-import tactic
+import set_theory.ordinal_arithmetic
 
 universe u
 
@@ -86,9 +85,19 @@ begin
   exact l.prss_one.symm,
 end
 
+/-
+def split_on' (l : list ℕ) (n : ℕ) : list (list ℕ) :=
+(l.split_on n).map (list.cons n)
+
+noncomputable def ordinal' : list ℕ → ordinal
+| [] := 0
+| (n :: l) := ((l.split_on' (n + 1)).map (λ m, ordinal.omega ^ ordinal' m)).sum
+using_well_founded
+-/
+
 /-- Returns the function that applies `g 0`, `g 1`, ... `g (n - 1)` to `f`, starting from `a`. -/
 def apply {α β : Type u} (f : α → β → α) (a : α) (g : ℕ → β) : ℕ → α :=
-λ n, foldl f a ((list.range n).map g)
+λ n, ((list.range n).map g).foldl f a
 
 /-- PrSS terminates. -/
 theorem termination {l : list ℕ} (hl : is_standard l) (g : ℕ → ℕ) :
